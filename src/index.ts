@@ -1,16 +1,12 @@
-import express, { Request, Response } from 'express'
+import express, { RequestHandler } from 'express'
 import path from 'path'
 import fs from 'fs'
 
 const app = express()
 const port = process.env.PORT || 3000
 
-interface VerificationParams {
-    filename: string
-}
-
 // Middleware to handle the SSL verification file requests
-app.get('/.well-known/pki-validation/:filename', (req: Request<VerificationParams>, res: Response) => {
+app.get('/.well-known/pki-validation/:filename', ((req, res) => {
     const filename = req.params.filename
     const filePath = path.join(__dirname, '..', 'verificationFiles', filename)
 
@@ -28,12 +24,12 @@ app.get('/.well-known/pki-validation/:filename', (req: Request<VerificationParam
         console.error('Error reading verification file:', error)
         res.status(500).send('Error reading verification file')
     }
-})
+}) as RequestHandler)
 
 // Basic health check endpoint
-app.get('/health', (_req: Request, res: Response) => {
+app.get('/health', ((_req, res) => {
     res.status(200).send('OK')
-})
+}) as RequestHandler)
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
