@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = parseInt(process.env.PORT || '3000', 10)
 
 // Middleware to handle the SSL verification file requests
 app.get('/.well-known/pki-validation/:filename', ((req, res) => {
@@ -31,7 +31,7 @@ app.get('/health', ((_req, res) => {
     res.status(200).send('OK')
 }) as RequestHandler)
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on port ${port}`)
     console.log(`SSL verification files should be placed in: ${path.join(__dirname, '..', 'verificationFiles')}`)
 })
