@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 
 const app = express()
-const port = parseInt(process.env.PORT || '3000', 10)
+const port = parseInt(process.env.PORT || '80', 10)
 
 // Middleware to handle the SSL verification file requests
 app.get('/.well-known/pki-validation/:filename', ((req, res) => {
